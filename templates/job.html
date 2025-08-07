@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Jobs by Department - Branch Logic{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4 fw-bold">Explore Jobs by Department</h2>
+
+    {% set departments = {
+        'Engineering': [
+            {'title': 'Software Engineer', 'company': 'TechCorp', 'location': 'Bangalore'},
+            {'title': 'Data Scientist', 'company': 'DataX', 'location': 'Hyderabad'},
+            {'title': 'Mechanical Engineer', 'company': 'Automotive Innovations', 'location': 'Pune'},
+            {'title': 'Civil Engineer', 'company': 'BuildRight Constructions', 'location': 'Chennai'},
+            {'title': 'Electrical Engineer', 'company': 'PowerGrid Solutions', 'location': 'Delhi'}
+        ],
+        'Marketing': [
+            {'title': 'Marketing Manager', 'company': 'Brandify', 'location': 'Mumbai'},
+            {'title': 'SEO Analyst', 'company': 'WebWave', 'location': 'Delhi'},
+            {'title': 'Content Strategist', 'company': 'ContentHub', 'location': 'Remote'}
+        ],
+        'Human Resources': [
+            {'title': 'HR Executive', 'company': 'PeopleFirst', 'location': 'Chennai'},
+            {'title': 'Recruitment Specialist', 'company': 'Hiring Pros', 'location': 'Bangalore'}
+        ],
+        'Design': [
+            {'title': 'UI/UX Designer', 'company': 'Creato', 'location': 'Remote'},
+            {'title': 'Graphic Designer', 'company': 'Visual Arts Studio', 'location': 'Mumbai'}
+        ],
+        'Finance': [
+            {'title': 'Financial Analyst', 'company': 'Global Finance', 'location': 'Hyderabad'},
+            {'title': 'Accountant', 'company': 'FinServe Co.', 'location': 'Chennai'}
+        ],
+        'Healthcare': [
+            {'title': 'Medical Technologist', 'company': 'HealthCare Solutions', 'location': 'Pune'},
+            {'title': 'Pharmacist', 'company': 'MediPlus', 'location': 'Mumbai'}
+        ]
+    } %}
+
+    {% for dept, jobs in departments.items() %}
+        <div class="mb-5">
+            <h3 class="fw-semibold text-info">{{ dept }}</h3>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-2">
+                {% for job in jobs %}
+                    <div class="col">
+                        <div class="glass p-4 h-100">
+                            <div class="card-body p-0">
+                                <h5 class="card-title fw-bold">{{ job.title }}</h5>
+                                <p class="card-text mb-1 text-muted"><i class="bi bi-building"></i> {{ job.company }}</p>
+                                <p class="card-text text-muted"><i class="bi bi-geo-alt"></i> {{ job.location }}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0 p-0 mt-3">
+                                <a href="#" class="glass-btn w-100">View Job</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

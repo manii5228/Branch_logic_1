@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4 text-center g-4">
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Students</h5>
+                <h3 class="fw-bold text-info">{{ total_students }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Jobs</h5>
+                <h3 class="fw-bold text-info">{{ total_jobs }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Applications</h5>
+                <h3 class="fw-bold text-info">{{ total_applications }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <hr class="text-white-50 my-5">
+
+    <!-- Applicant Management Section -->
+    <div class="glass p-4 mb-5">
+        <h4 class="mb-4 text-center">Applicant Management</h4>
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <a href="{{ url_for('admin.all_applications') }}" class="glass-btn px-4 py-2">
+                View All Applications
+            </a>
+            <a href="{{ url_for('admin.jobs') }}" class="glass-btn px-4 py-2">
+                View All Job Posts
+            </a>
+            <a href="{{ url_for('admin.view_students') }}" class="glass-btn px-4 py-2">
+                View All Students
+            </a>
+        </div>
+    </div>
+
+    <hr class="text-white-50 my-5">
+
+    <!-- Job Listing -->
+    <div class="glass p-4 mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>Jobs Posted</h4>
+            <a href="{{ url_for('admin.create_job') }}" class="glass-btn">➕ Post New Job</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Applicants</th>
+                        <th>Status</th>
+                        <th>Deadline</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.id }}</td>
+                        <td>{{ job.title }}</td>
+                        <td><a href="{{ url_for('admin.view_applicants', job_id=job.id) }}" class="glass-btn btn-sm">👁 View</a></td>
+                        <td>
+                            {% if job.is_visible %}
+                                <span class="badge bg-success">Visible</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Hidden</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ job.deadline.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.edit_job', job_id=job.id) }}" class="glass-btn btn-sm">✏️ Edit</a>
+                            <a href="{{ url_for('admin.delete_job', job_id=job.id) }}" class="glass-btn btn-sm" onclick="return confirm('Are you sure?');">🗑 Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

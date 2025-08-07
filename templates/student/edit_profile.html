@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5 d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="glass p-5" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Edit Profile</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show glass" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('student.edit_profile') }}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" class="form-control glass" id="name" name="name" value="{{ student.name }}" required>
+            </div>
+
+            <button type="submit" class="glass-btn w-100">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

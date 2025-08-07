@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard - Branch Logic{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Welcome, {{ student.name }}</h2>
+
+    <div class="row g-4">
+        <!-- Profile Info -->
+        <div class="col-md-4">
+            <div class="glass p-4 h-100">
+                <h5 class="card-title">Profile</h5>
+                <p><strong>Email:</strong> {{ student.user.email }}</p>
+                <p><strong>Resume:</strong>
+                    {% if student.resume %}
+                        <a href="{{ url_for('student.view_resume') }}" class="text-info" target="_blank">View</a>
+                    {% else %}
+                        <span class="text-muted">Not Uploaded</span>
+                    {% endif %}
+                </p>
+                <a href="{{ url_for('student.upload_resume') }}" class="glass-btn d-block text-center mb-2">Upload Resume</a>
+                <a href="{{ url_for('student.edit_profile') }}" class="glass-btn d-block text-center">Edit Profile</a>
+            </div>
+        </div>
+
+        <!-- Recent Jobs -->
+        <div class="col-md-8">
+            <div class="glass p-4 h-100">
+                <h5 class="card-title mb-3">Recently Posted Jobs</h5>
+                {% if recent_jobs %}
+                <ul class="list-unstyled">
+                    {% for job in recent_jobs %}
+                    <li class="glass p-3 mb-3 d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{{ url_for('student.job_details', job_id=job.id) }}" class="text-info text-decoration-none">
+                                <strong>{{ job.title }}</strong> at {{ job.company }}
+                            </a>
+                            <br><small class="text-muted">{{ job.location }}</small>
+                        </div>
+                        {% if job.id in applied_job_ids %}
+                        <span class="badge bg-success">Applied</span>
+                        {% else %}
+                        <form action="{{ url_for('student.apply_job', job_id=job.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="glass-btn btn-sm">Apply</button>
+                        </form>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No jobs posted yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

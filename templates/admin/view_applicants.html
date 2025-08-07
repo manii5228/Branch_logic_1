@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Applicants for {{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Applicants for "{{ job.title }}"</h2>
+    
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        <a href="{{ url_for('admin.download_applicants', job_id=job.id) }}" class="glass-btn">
+            Download Applicants (Excel)
+        </a>
+        <a href="{{ url_for('admin.download_all_applicants') }}" class="glass-btn">
+            Download All Applicants (Excel)
+        </a>
+    </div>
+
+    {% if applicants %}
+    <div class="glass p-4">
+        <div class="table-responsive">
+            <table class="table table-hover table-dark">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Resume</th>
+                        <th>Status</th>
+                        <th>Applied On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in applicants %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('admin.view_student', student_id=app.student.id) }}" class="text-info text-decoration-none">
+                                {{ app.student.name }}
+                            </a>
+                        </td>
+                        <td>{{ app.student.user.email }}</td>
+                        <td>
+                            {% if app.student.resume %}
+                                <a href="{{ url_for('admin.view_resume', student_id=app.student.id) }}" target="_blank" class="text-info text-decoration-none">
+                                    View
+                                </a>
+                            {% else %}
+                                <span class="text-muted">Not Uploaded</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ app.status }}</td>
+                        <td>{{ app.applied_on.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>
+                            {% if app.student.resume %}
+                                <a href="{{ url_for('admin.download_resume', student_id=app.student.id) }}" class="glass-btn btn-sm">Download Resume</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <p>No applicants found for this job.</p>
+    {% endif %}
+</div>
+{% endblock %}

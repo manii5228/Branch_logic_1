@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}All Applications - Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">All Applications</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show glass" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="table-responsive glass p-4">
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Student</th>
+                    <th>Status</th>
+                    <th>Resume</th>
+                    <th>Applied On</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td><a href="{{ url_for('student.job_details', job_id=application.job.id) }}" class="text-info">{{ application.job.title }}</a></td>
+                    <td><a href="{{ url_for('admin.view_student', student_id=application.student.id) }}" class="text-info">{{ application.student.name }}</a></td>
+                    <td>{{ application.status }}</td>
+                    <td>
+                        {% if application.student.resume %}
+                            <a href="{{ url_for('admin.view_resume', student_id=application.student.id) }}" target="_blank" class="text-info">View Resume</a>
+                        {% else %}
+                            <span class="text-muted">Not Uploaded</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ application.applied_on.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.update_application_status', application_id=application.id) }}" method="POST" class="d-flex flex-column align-items-start">
+                            <select name="status" class="form-select glass mb-2">
+                                <option selected disabled>Change...</option>
+                                <option value="Under Review" {% if application.status == 'Under Review' %}selected{% endif %}>Under Review</option>
+                                <option value="Interview Scheduled" {% if application.status == 'Interview Scheduled' %}selected{% endif %}>Interview Scheduled</option>
+                                <option value="Selected" {% if application.status == 'Selected' %}selected{% endif %}>Selected</option>
+                                <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                            <button type="submit" class="glass-btn btn-sm">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

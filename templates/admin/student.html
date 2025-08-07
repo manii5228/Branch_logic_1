@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}All Students - Branch Logic{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">All Registered Students</h2>
+
+    <div class="glass p-4">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-dark align-middle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Resume</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.view_student', student_id=student.id) }}" class="text-info text-decoration-none">
+                                {{ student.name }}
+                            </a>
+                        </td>
+                        <td>{{ student.user.email }}</td>
+                        <td>
+                            {% if student.resume %}
+                                <div class="d-flex gap-2">
+                                    <a href="{{ url_for('admin.view_resume', student_id=student.id) }}"
+                                       class="glass-btn btn-sm" target="_blank">
+                                        View Resume
+                                    </a>
+                                    <a href="{{ url_for('admin.download_resume', student_id=student.id) }}"
+                                       class="glass-btn btn-sm">
+                                        Download
+                                    </a>
+                                </div>
+                            {% else %}
+                            <span class="text-muted">No Resume Uploaded</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

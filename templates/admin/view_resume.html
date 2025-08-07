@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}View Resume{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="glass p-5">
+        <h2 class="mb-4">Student Resume</h2>
+        
+        {% if resume_url %}
+        <div class="ratio ratio-16x9 border glass">
+            <iframe src="{{ resume_url }}" class="w-100 h-100 border-0"></iframe>
+        </div>
+        {% else %}
+        <div class="alert alert-warning glass">Resume not available.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

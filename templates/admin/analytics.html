@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Analytics - Branch Logic{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Admin Analytics</h2>
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Jobs</h5>
+                <h3 class="fw-bold text-info">{{ job_count }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Applications</h5>
+                <h3 class="fw-bold text-info">{{ application_count }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Students</h5>
+                <h3 class="fw-bold text-info">{{ student_count }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

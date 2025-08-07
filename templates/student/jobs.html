@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Available Jobs{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Explore Latest Job Opportunities</h2>
+
+    {% if jobs %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for job in jobs %}
+                <div class="col">
+                    <div class="glass p-4 h-100">
+                        <div>
+                            <a href="{{ url_for('student.job_details', job_id=job.id) }}" class="text-info text-decoration-none">
+                                <h5 class="card-title">{{ job.title }}</h5>
+                            </a>
+                            <p class="card-text"><strong>Company:</strong> {{ job.company }}</p>
+                            <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
+                            <p class="card-text"><strong>Posted On:</strong> {{ job.posted_on.strftime('%d %b %Y') }}</p>
+                            <p class="card-text text-muted">{{ job.description[:100] }}...</p>
+                        </div>
+                        <div class="mt-auto pt-3">
+                            {% if job.id in applied_job_ids %}
+                                <button class="glass-btn w-100" disabled>Already Applied</button>
+                            {% else %}
+                                <form action="{{ url_for('student.apply_job', job_id=job.id) }}" method="post">
+                                    <button type="submit" class="glass-btn w-100">Apply Now</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-4 glass">No jobs available right now. Please check back later.</div>
+    {% endif %}
+</div>
+{% endblock %}

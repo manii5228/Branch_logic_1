@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | Branch Logic{% endblock %}
+
+{% block content %}
+<section class="container my-5 d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="glass p-5" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Login to your Account</h2>
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            {{ form.hidden_tag() }}
+
+            <!-- Email Field -->
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control glass", placeholder="Enter your email") }}
+                {% if form.email.errors %}
+                    <div class="text-danger small">{{ form.email.errors[0] }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control glass", placeholder="Enter your password") }}
+                {% if form.password.errors %}
+                    <div class="text-danger small">{{ form.password.errors[0] }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+                {{ form.submit(class="glass-btn") }}
+            </div>
+            
+            <p class="text-center mt-3">
+                Don't have an account? <a href="{{ url_for('auth.register') }}" class="text-info text-decoration-none">Register here</a>
+            </p>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ job.title }} - Job Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Job Header -->
+    <div class="mb-4 text-center">
+        <h2 class="fw-bold">{{ job.title }}</h2>
+        <p class="text-muted mb-1">{{ job.company }} &middot; {{ job.location }}</p>
+        <p class="small text-muted">Posted on {{ job.posted_on.strftime('%B %d, %Y') }}</p>
+    </div>
+
+    <!-- Job Description -->
+    <div class="glass p-4 shadow-sm mb-4">
+        <h5 class="mb-3">Job Description</h5>
+        <p class="text-muted">{{ job.description }}</p>
+    </div>
+
+    <!-- Apply Button -->
+    {% if session.get('student_id') %}
+        <form action="{{ url_for('student.apply_job', job_id=job.id) }}" method="POST">
+            <button class="glass-btn btn-lg w-100">Apply Now</button>
+        </form>
+    {% else %}
+        <div class="alert alert-info glass text-center">
+            Please <a href="{{ url_for('auth.login') }}" class="text-info text-decoration-none">log in</a> to apply for this job.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
