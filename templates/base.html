@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Branch Logic{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS (Combined Styles) -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* === Glowing Circle Background === */
+        .glow-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1400px;
+            height: 1400px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(
+                circle,
+                rgba(79, 195, 247, 0.7) 0%,
+                rgba(30, 30, 30, 0.5) 50%,
+                rgba(0, 0, 0, 1) 85%
+            );
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 1;
+        }
+
+        /* === Glassy Style === */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+        }
+
+        .glass-btn {
+            background: rgba(79, 195, 247, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-radius: 20px;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        .glass-btn:hover {
+            background: rgba(79, 195, 247, 0.3);
+        }
+
+        /* === Navbar === */
+        .navbar {
+            padding: 1rem 2rem;
+            z-index: 2;
+            position: relative;
+            border-radius: 0;
+        }
+        
+        .navbar-brand strong {
+            font-size: 1.5rem;
+            color: #4FC3F7 !important;
+        }
+        
+        .navbar-nav .nav-link {
+            color: white !important;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            opacity: 1;
+        }
+
+        /* === Cards === */
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card .icon-circle {
+            width: 50px;
+            height: 50px;
+            background: rgba(79, 195, 247, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card .icon-circle i {
+            color: #4FC3F7;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* === Hero Section === */
+        .hero {
+            padding: 6rem 2rem;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.8;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stats .stat-item {
+            text-align: center;
+        }
+
+        .hero-stats .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4FC3F7;
+        }
+
+        .hero-stats .stat-label {
+            opacity: 0.7;
+        }
+        
+        /* === Categories Section === */
+        .categories {
+            padding: 4rem 2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-card h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .category-card p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* === Testimonials Section === */
+        .testimonials {
+            padding: 4rem 0; /* Changed padding to 0 for full-width */
+            z-index: 2;
+            position: relative;
+        }
+
+        .testimonials-container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .testimonial-row {
+            display: flex;
+            gap: 2rem;
+            animation: moveLeft 30s linear infinite;
+        }
+        
+        .testimonial-row.reverse-animation {
+            animation: moveRight 30s linear infinite;
+        }
+
+        .testimonial-card {
+            flex-shrink: 0;
+            width: 350px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px; /* Added border-radius for consistency */
+            margin: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .testimonial-card {
+                width: 250px;
+                padding: 1.5rem;
+            }
+        }
+        
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #4FC3F7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        
+        @keyframes moveLeft {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        
+        @keyframes moveRight {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
+
+        /* === Trusted Companies Section === */
+        .trusted-companies {
+            padding: 4rem 2rem;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .company-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .company-logos img {
+            height: 50px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .company-logos img:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        /* === Footer === */
+        .footer {
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10;
+            padding: 1rem 0;
+        }
+
+        .footer .container {
+            max-width: 90%;
+        }
+
+        .footer a {
+            text-decoration: none;
+        }
+
+        .footer h5, .footer h6 {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .footer .list-unstyled a {
+            color: rgba(255, 255, 255, 0.5) !important;
+            font-size: 0.9rem;
+        }
+
+        .list-unstyled a:hover {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Custom Flash Message Styles */
+        .alert.glass {
+            color: #ffffff; /* Default white text for all alerts */
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .alert-success.glass {
+            color: #4CAF50; /* A vibrant green for success messages */
+            background-color: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+        .alert-danger.glass {
+            color: #F44336; /* A vibrant red for danger messages */
+            background-color: rgba(244, 67, 54, 0.1);
+            border-color: rgba(244, 67, 54, 0.3);
+        }
+        .alert-warning.glass {
+            color: #FFC107; /* A vibrant yellow for warning messages */
+            background-color: rgba(255, 193, 7, 0.1);
+            border-color: rgba(255, 193, 7, 0.3);
+        }
+        .alert-info.glass {
+            color: #2196F3; /* A vibrant blue for info messages */
+            background-color: rgba(33, 150, 243, 0.1);
+            border-color: rgba(33, 150, 243, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Glowing Background Circle -->
+<div class="glow-bg"></div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg glass">
+    <div class="container-fluid justify-content-between">
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.home') }}">
+            <strong>Branch Logic</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="{{ url_for('main.job') }}">Job</a>
+                </li>
+                {% if current_user.is_authenticated and current_user.role == 'student' %}
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="{{ url_for('main.blog') }}">Careers</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="{{ url_for('student.student_dashboard') }}">Dashboard</a>
+                </li>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+                </li>
+                {% endif %}
+            </ul>
+            <div class="d-flex align-items-center">
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('auth.logout') }}" class="glass-btn">Logout</a>
+                {% else %}
+                <a href="{{ url_for('auth.login') }}" class="glass-btn me-2">Login</a>
+                <a href="{{ url_for('auth.register') }}" class="glass-btn">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main content block -->
+<main class="container mt-4" style="z-index: 2; position: relative; flex-grow: 1;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show glass mb-3" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h5>Company</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{{ url_for('main.blog') }}">About Us</a></li>
+                    <li><a href="{{ url_for('main.blog') }}">Blog</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Support</h5>
+                <ul class="list-unstyled">
+                    <li><a href="https://wa.me/7550287408">FAQs</a></li>
+                    <li><a href="https://wa.me/7550287408">Contact</a></li>
+                    <li><a href="https://wa.me/7550287408">Feedback</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Legal</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6>Made by</h6>
+                <h6>Manjunath</h6>
+                <div class="d-flex gap-2">
+                    <a href="https://wa.me/8500667746"><i class="bi bi-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/mani_manjunath_v/"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="text-white-50 mt-4">
+        <p class="text-center text-white-50 small">&copy; 2025 Branch Logic. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

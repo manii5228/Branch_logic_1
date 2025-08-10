@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}All Applications - Admin{% endblock %}
+
+{% block content %}
+<style>
+    /* Custom style for the readable dropdown option */
+    .form-select.glass option {
+        background-color: #0a0a0a; /* Ensure the background is dark */
+        color: white; /* Ensure text is white */
+    }
+
+    /* More specific rule for the selected disabled option */
+    .form-select.glass option[disabled] {
+        color: #cccccc; /* A light gray for better visibility */
+    }
+
+    /* Styles for the select element itself to ensure readability */
+    .form-select.glass {
+        color: white;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    /* Custom styles for flash messages to ensure visibility */
+    .alert.glass {
+        color: #ffffff; /* Default white text for all alerts */
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .alert-success.glass {
+        color: #4CAF50; /* A vibrant green for success messages */
+        background-color: rgba(76, 175, 80, 0.1);
+        border-color: rgba(76, 175, 80, 0.3);
+    }
+    .alert-danger.glass {
+        color: #F44336; /* A vibrant red for danger messages */
+        background-color: rgba(244, 67, 54, 0.1);
+        border-color: rgba(244, 67, 54, 0.3);
+    }
+    .alert-warning.glass {
+        color: #FFC107; /* A vibrant yellow for warning messages */
+        background-color: rgba(255, 193, 7, 0.1);
+        border-color: rgba(255, 193, 7, 0.3);
+    }
+    .alert-info.glass {
+        color: #2196F3; /* A vibrant blue for info messages */
+        background-color: rgba(33, 150, 243, 0.1);
+        border-color: rgba(33, 150, 243, 0.3);
+    }
+</style>
+<div class="container mt-5">
+    <h2 class="mb-4">All Applications</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show glass" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="table-responsive glass p-4">
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Student</th>
+                    <th>Status</th>
+                    <th>Resume</th>
+                    <th>Applied On</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td><a href="{{ url_for('student.job_details', job_id=application.job.id) }}" class="text-info">{{ application.job.title }}</a></td>
+                    <td><a href="{{ url_for('admin.view_student', student_id=application.student.id) }}" class="text-info">{{ application.student.name }}</a></td>
+                    <td>
+                        {% if application.status == 'Selected' %}
+                            <span class="badge bg-success">{{ application.status }}</span>
+                        {% elif application.status == 'Rejected' %}
+                            <span class="badge bg-danger">{{ application.status }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ application.status or 'Pending' }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if application.student.resume %}
+                            <a href="{{ url_for('admin.view_resume', student_id=application.student.id) }}" target="_blank" class="text-info">View Resume</a>
+                        {% else %}
+                            <span class="text-muted">Not Uploaded</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ application.applied_on.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.update_application_status', application_id=application.id) }}" method="POST" class="d-flex flex-column align-items-start">
+                            <select name="status" class="form-select glass mb-2">
+                                <option selected disabled class="bg-dark text-white">Change...</option>
+                                <option value="Under Review" {% if application.status == 'Under Review' %}selected{% endif %}>Under Review</option>
+                                <option value="Interview Scheduled" {% if application.status == 'Interview Scheduled' %}selected{% endif %}>Interview Scheduled</option>
+                                <option value="Selected" {% if application.status == 'Selected' %}selected{% endif %}>Selected</option>
+                                <option value="Rejected" {% if application.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                            <button type="submit" class="glass-btn btn-sm">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

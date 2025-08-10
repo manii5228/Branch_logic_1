@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block title %}Analytics - Branch Logic{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Admin Analytics</h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4 text-center g-4">
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Students</h5>
+                <h3 class="fw-bold text-info">{{ student_count }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Jobs</h5>
+                <h3 class="fw-bold text-info">{{ job_count }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Applications</h5>
+                <h3 class="fw-bold text-info">{{ application_count }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <hr class="text-white-50 my-5">
+
+    <!-- Charts Section -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="glass p-4 h-100">
+                <h5 class="text-center mb-3">Jobs, Applications, and Students Overview</h5>
+                <div class="chart-container" style="position: relative; width: 100%; aspect-ratio: 16/9;">
+                    <canvas id="overviewChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="glass p-4 h-100">
+                <h5 class="text-center mb-3">Total Students vs. Total Applications</h5>
+                <div class="chart-container" style="position: relative; width: 100%; aspect-ratio: 16/9;">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const jobs = {{ job_count }};
+        const applications = {{ application_count }};
+        const students = {{ student_count }};
+
+        // Bar Chart
+        const overviewCtx = document.getElementById('overviewChart').getContext('2d');
+        const overviewChart = new Chart(overviewCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jobs', 'Applications', 'Students'],
+                datasets: [{
+                    label: 'Count',
+                    data: [jobs, applications, students],
+                    backgroundColor: [
+                        'rgba(79, 195, 247, 0.5)', // Blue
+                        'rgba(255, 159, 64, 0.5)', // Orange
+                        'rgba(75, 192, 192, 0.5)'  // Green
+                    ],
+                    borderColor: [
+                        'rgba(79, 195, 247, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Pie Chart
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Total Students', 'Total Applications'],
+                datasets: [{
+                    label: 'Counts',
+                    data: [students, applications],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.5)', // Green
+                        'rgba(255, 159, 64, 0.5)'  // Orange
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

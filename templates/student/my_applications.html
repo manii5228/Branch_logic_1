@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}My Applications{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Job Applications</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show glass" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if applications %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for app in applications %}
+                <div class="col">
+                    <div class="glass p-4 h-100">
+                        <div class="d-flex flex-column h-100">
+                            <h5 class="card-title">{{ app.job.title }}</h5>
+                            <p class="card-text"><strong>Company:</strong> {{ app.job.company }}</p>
+                            <p class="card-text"><strong>Location:</strong> {{ app.job.location }}</p>
+                            <p class="card-text"><strong>Status:</strong>
+                                {% if app.status == 'Approved' %}
+                                    <span class="badge bg-success">{{ app.status }}</span>
+                                {% elif app.status == 'Rejected' %}
+                                    <span class="badge bg-danger">{{ app.status }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Pending</span>
+                                {% endif %}
+                            </p>
+                            <p class="card-text"><strong>Applied On:</strong> {{ app.applied_on.strftime('%d %b %Y') }}</p>
+                            <p class="card-text text-light">{{ app.job.description[:100] }}...</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-4 glass">
+            You haven’t applied for any jobs yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

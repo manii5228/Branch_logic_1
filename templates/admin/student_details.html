@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Student Details{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Student Details</h2>
+    
+    <div class="glass p-4 mt-4">
+        <h4 class="card-title">{{ student.name }}</h4>
+        <p><strong>Email:</strong> {{ student.user.email }}</p>
+        <p><strong>Phone:</strong> {{ student.phone or 'Not provided' }}</p>
+        <p><strong>CGPA:</strong> {{ student.cgpa or 'Not provided' }}</p>
+        <p><strong>Resume:</strong> 
+            {% if student.resume %}
+                <a href="{{ url_for('admin.view_resume', student_id=student.id) }}" target="_blank" class="text-info text-decoration-none">View Resume</a>
+            {% else %}
+                <span class="text-muted">Not Uploaded</span>
+            {% endif %}
+        </p>
+        <p><strong>GitHub:</strong>
+            {% if student.github_id %}
+                <a href="https://github.com/{{ student.github_id }}" target="_blank" class="text-info text-decoration-none">{{ student.github_id }}</a>
+            {% else %}
+                <span class="text-muted">Not provided</span>
+            {% endif %}
+        </p>
+        <p><strong>LinkedIn:</strong>
+            {% if student.linkedin_id %}
+                <a href="{{ student.linkedin_id }}" target="_blank" class="text-info text-decoration-none">{{ student.linkedin_id }}</a>
+            {% else %}
+                <span class="text-muted">Not provided</span>
+            {% endif %}
+        </p>
+        <p><strong>Portfolio:</strong>
+            {% if student.portfolio %}
+                <a href="{{ student.portfolio }}" target="_blank" class="text-info text-decoration-none">{{ student.portfolio }}</a>
+            {% else %}
+                <span class="text-muted">Not provided</span>
+            {% endif %}
+        </p>
+        <p><strong>Address:</strong> {{ student.address or 'Not provided' }}</p>
+        
+        <h5 class="mt-4">Experience</h5>
+        <div class="glass p-3 mt-2">
+            <p>{{ student.experience or 'Not provided' }}</p>
+        </div>
+    </div>
+
+    <h5 class="mt-4">Applications</h5>
+    <ul class="list-unstyled">
+        {% for app in applications %}
+        <li class="glass p-3 mb-2 d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ app.job.title }}</strong> - 
+                {% if app.status == 'Selected' %}
+                    <span class="badge bg-success">{{ app.status }}</span>
+                {% elif app.status == 'Rejected' %}
+                    <span class="badge bg-danger">{{ app.status }}</span>
+                {% else %}
+                    <span class="badge bg-secondary">{{ app.status or 'Pending' }}</span>
+                {% endif %}
+            </div>
+            <span class="text-muted small">{{ app.applied_on.strftime('%Y-%m-%d %H:%M') }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

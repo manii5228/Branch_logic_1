@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}All Jobs{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ url_for('admin.create_job') }}" class="glass-btn">
+            ➕ Post New Job
+        </a>
+    </div>
+    <h3 class="mb-4">All Jobs</h3>
+    <div class="glass p-4">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Posted On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.id }}</td>
+                        <td>{{ job.title }}</td>
+                        <td>{{ job.company }}</td>
+                        <td>{{ job.posted_on.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('admin.edit_job', job_id=job.id) }}" class="glass-btn btn-sm">Edit</a>
+                                <a href="{{ url_for('admin.view_applicants', job_id=job.id) }}" class="glass-btn btn-sm">Applicants</a>
+                                <a href="{{ url_for('admin.delete_job', job_id=job.id) }}" class="glass-btn btn-sm"
+                                   onclick="return confirm('Are you sure?');">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

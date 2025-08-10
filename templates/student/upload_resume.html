@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Upload Resume{% endblock %}
+
+{% block content %}
+<div class="container mt-5 d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="glass p-5" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Upload Your Resume</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show glass" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('student.upload_resume') }}" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="resume" class="form-label">Select PDF Resume</label>
+                <input type="file" class="form-control glass" id="resume" name="resume" accept=".pdf" required>
+            </div>
+            <button type="submit" class="glass-btn w-100">Upload Resume</button>
+        </form>
+
+        {% if student.resume %}
+            <div class="mt-4 text-center">
+                <p>Current Resume:</p>
+                <a href="{{ url_for('static', filename=student.resume.split('static/')[1]) }}" class="glass-btn" target="_blank">View Uploaded Resume</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!-- Hero Section -->
+<header class="hero">
+    <div class="container">
+        <h1>Find Your Dream Job with BranchLogic</h1>
+        <p>Discover amazing career opportunities with top companies. Connect with employers, advance your career, and find the perfect job that matches your skills.</p>
+        <div class="d-flex justify-content-center mt-4 w-100" style="max-width: 600px; margin: 0 auto;">
+            <form action="{{ url_for('main.job') }}" method="GET" class="d-flex w-100">
+                <input type="text" name="q" class="form-control glass" placeholder="Search for jobs..." required style="border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none;">
+                <button type="submit" class="glass-btn" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">Search Jobs</button>
+            </form>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">{{ job_count }}</div>
+                <div class="stat-label">Active Jobs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1.2K+</div>
+                <div class="stat-label">Companies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ student_count }}</div>
+                <div class="stat-label">Job Seekers</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Browse by Category Section -->
+<section class="categories">
+    <div class="container">
+        <h2 class="text-center mb-5">Browse by Category</h2>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="col"><div class="glass category-card"><h3>Technology</h3><p>2,847 jobs</p></div></div>
+            <div class="col"><div class="glass category-card"><h3>Design</h3><p>1,234 jobs</p></div></div>
+            <div class="col"><div class="glass category-card"><h3>Sales</h3><p>987 jobs</p></div></div>
+            <div class="col"><div class="glass category-card"><h3>Marketing</h3><p>756 jobs</p></div></div>
+            <div class="col"><div class="glass category-card"><h3>Human Resources</h3><p>543 jobs</p></div></div>
+            <div class="col"><div class="glass category-card"><h3>Engineering</h3><p>432 jobs</p></div></div>
+            <div class="col"><div class="glass category-card"><h3>Healthcare</h3><p>321 jobs</p></div></div>
+            <div class="col"><div class="glass category-card"><h3>Finance</h3><p>298 jobs</p></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Trusted by Companies Section -->
+<section class="trusted-companies">
+    <div class="container">
+        <h2 class="text-center">Trusted by Leading Companies</h2>
+        <p class="text-center opacity-75">Join thousands of professionals who found their dream jobs through our platform.</p>
+        <div class="company-logos">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Meta_Platforms_Inc._logo.svg" alt="Meta Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/Tesla_logo.svg" alt="Tesla Logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify Logo">
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+    <div class="container-fluid">
+        <h2 class="text-center mb-5">What Our Users Say</h2>
+        <div class="testimonials-container">
+            <!-- First row of testimonials (left to right) -->
+            <div class="testimonial-row">
+                <div class="glass testimonial-card"><p>"BranchLogic helped me find my dream job at Google. The platform is intuitive and the job matching is incredibly accurate."</p><div class="testimonial-author"><div class="avatar">SJ</div><div><strong>Sarah Johnson</strong><br><span class="opacity-75">Software Engineer at Google</span></div></div></div>
+                <div class="glass testimonial-card"><p>"As a recruiter, I love how easy it is to post jobs and find qualified candidates. The quality of applicants is outstanding."</p><div class="testimonial-author"><div class="avatar">MC</div><div><strong>Michael Chen</strong><br><span class="opacity-75">Product Manager at Microsoft</span></div></div></div>
+                <div class="glass testimonial-card"><p>"The career resources and job alerts feature helped me stay on top of opportunities. Highly recommend to any job seeker!"</p><div class="testimonial-author"><div class="avatar">ER</div><div><strong>Emily Rodriguez</strong><br><span class="opacity-75">UX Designer at Airbnb</span></div></div></div>
+                <!-- Duplicate cards for infinite scroll effect -->
+                <div class="glass testimonial-card"><p>"BranchLogic helped me find my dream job at Google. The platform is intuitive and the job matching is incredibly accurate."</p><div class="testimonial-author"><div class="avatar">SJ</div><div><strong>Sarah Johnson</strong><br><span class="opacity-75">Software Engineer at Google</span></div></div></div>
+                <div class="glass testimonial-card"><p>"As a recruiter, I love how easy it is to post jobs and find qualified candidates. The quality of applicants is outstanding."</p><div class="testimonial-author"><div class="avatar">MC</div><div><strong>Michael Chen</strong><br><span class="opacity-75">Product Manager at Microsoft</span></div></div></div>
+                <div class="glass testimonial-card"><p>"The career resources and job alerts feature helped me stay on top of opportunities. Highly recommend to any job seeker!"</p><div class="testimonial-author"><div class="avatar">ER</div><div><strong>Emily Rodriguez</strong><br><span class="opacity-75">UX Designer at Airbnb</span></div></div></div>
+            </div>
+        </div>
+        <div class="testimonials-container mt-4">
+             <!-- Second row of testimonials (right to left) -->
+             <div class="testimonial-row reverse-animation">
+                <div class="glass testimonial-card"><p>"BranchLogic made the job search process so much smoother and faster. The resources are top-notch and truly helpful."</p><div class="testimonial-author"><div class="avatar">KW</div><div><strong>Kyle Williams</strong><br><span class="opacity-75">Data Analyst at Apple</span></div></div></div>
+                <div class="glass testimonial-card"><p>"The platform's interface is clean and easy to use. Finding qualified candidates has never been this efficient."</p><div class="testimonial-author"><div class="avatar">SL</div><div><strong>Samantha Lee</strong><br><span class="opacity-75">HR Manager at Netflix</span></div></div></div>
+                <div class="glass testimonial-card"><p>"I love the community features! It's a great place to get advice and connect with peers in my industry."</p><div class="testimonial-author"><div class="avatar">PT</div><div><strong>Peter Taylor</strong><br><span class="opacity-75">Product Designer at Airbnb</span></div></div></div>
+                <!-- Duplicate cards for infinite scroll effect -->
+                <div class="glass testimonial-card"><p>"BranchLogic made the job search process so much smoother and faster. The resources are top-notch and truly helpful."</p><div class="testimonial-author"><div class="avatar">KW</div><div><strong>Kyle Williams</strong><br><span class="opacity-75">Data Analyst at Apple</span></div></div></div>
+                <div class="glass testimonial-card"><p>"The platform's interface is clean and easy to use. Finding qualified candidates has never been this efficient."</p><div class="testimonial-author"><div class="avatar">SL</div><div><strong>Samantha Lee</strong><br><span class="opacity-75">HR Manager at Netflix</span></div></div></div>
+                <div class="glass testimonial-card"><p>"I love the community features! It's a great place to get advice and connect with peers in my industry."</p><div class="testimonial-author"><div class="avatar">PT</div><div><strong>Peter Taylor</strong><br><span class="opacity-75">Product Designer at Airbnb</span></div></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

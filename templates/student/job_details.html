@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ job.title }} - Job Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Job Header -->
+    <div class="mb-4 text-center">
+        <h2 class="fw-bold text-white">{{ job.title }}</h2>
+        <p class="text-info mb-1">{{ job.company }} &middot; {{ job.location }}</p>
+        <p class="small text-light">Posted on {{ job.posted_on.strftime('%B %d, %Y') }}</p>
+    </div>
+    
+    <!-- Job Details and Description -->
+    <div class="glass p-4 shadow-sm mb-4">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <h5 class="text-info mb-3">Job Overview</h5>
+                <p><strong>Company:</strong> {{ job.company }}</p>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Category:</strong> {{ job.category.name }}</p>
+                <p><strong>Tags:</strong> {{ job.tags }}</p>
+            </div>
+            <div class="col-md-6">
+                <h5 class="text-info mb-3">Job Description</h5>
+                <p>{{ job.description }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Apply Button -->
+
+{% if applied %}
+    <button class="glass-btn w-100" disabled>Already Applied</button>
+{% else %}
+    <form action="{{ url_for('student.apply_job', job_id=job.id) }}" method="post">
+        <button type="submit" class="glass-btn w-100">Apply Now</button>
+    </form>
+{% endif %}
+
+</div>
+{% endblock %}

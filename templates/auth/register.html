@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Register | Branch Logic{% endblock %}
+
+{% block content %}
+<section class="container my-5 d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="glass p-5" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Create a New Account</h2>
+        <form method="POST" action="{{ url_for('auth.register') }}">
+            {{ form.hidden_tag() }}
+
+            <!-- Name Field -->
+            <div class="mb-3">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control glass", placeholder="Enter your name") }}
+                {% if form.name.errors %}
+                    <div class="text-danger small">{{ form.name.errors[0] }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Email Field -->
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control glass", placeholder="Enter your email") }}
+                {% if form.email.errors %}
+                    <div class="text-danger small">{{ form.email.errors[0] }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control glass", placeholder="Choose a password") }}
+                {% if form.password.errors %}
+                    <div class="text-danger small">{{ form.password.errors[0] }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="mb-3">
+                {{ form.confirm.label(class="form-label") }}
+                {{ form.confirm(class="form-control glass", placeholder="Confirm your password") }}
+                {% if form.confirm.errors %}
+                    <div class="text-danger small">{{ form.confirm.errors[0] }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+                {{ form.submit(class="glass-btn") }}
+            </div>
+            
+            <p class="text-center mt-3">
+                Already have an account? <a href="{{ url_for('auth.login') }}" class="text-info text-decoration-none">Login here</a>
+            </p>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Available Jobs{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Explore Latest Job Opportunities</h2>
+
+    {% if jobs %}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for job in jobs %}
+                <div class="col">
+                    <div class="glass p-4 h-100">
+                        <div>
+                            <h5 class="card-title fw-bold text-white">{{ job.title }}</h5>
+                            <p class="card-text text-light"><strong>Company:</strong> {{ job.company }}</p>
+                            <p class="card-text text-light"><strong>Location:</strong> {{ job.location }}</p>
+                            <p class="card-text text-light"><strong>Posted On:</strong> {{ job.posted_on.strftime('%d %b %Y') }}</p>
+                            <p class="card-text text-muted">{{ job.description[:100] }}...</p>
+                        </div>
+                        <div class="mt-auto pt-3">
+                           {% if job.id in applied_job_ids %}
+                                <button class="glass-btn w-100" disabled>Already Applied</button>
+                            {% else %}
+                                
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-4 glass">No jobs available right now. Please check back later.</div>
+    {% endif %}
+</div>
+{% endblock %}

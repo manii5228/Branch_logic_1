@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4 text-center g-4">
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Students</h5>
+                <h3 class="fw-bold text-info">{{ total_students }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Jobs</h5>
+                <h3 class="fw-bold text-info">{{ total_jobs }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass p-5 h-100">
+                <h5>Total Applications</h5>
+                <h3 class="fw-bold text-info">{{ total_applications }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <hr class="text-white-50 my-5">
+
+    <!-- Management Buttons Section -->
+    <div class="glass p-4 mb-5">
+        <h4 class="mb-4 text-center">Admin Management</h4>
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <a href="{{ url_for('admin.create_job') }}" class="glass-btn">➕ Post New Job</a>
+            <a href="{{ url_for('admin.all_applications') }}" class="glass-btn px-4 py-2">
+                View All Applications
+            </a>
+            <a href="{{ url_for('admin.jobs') }}" class="glass-btn px-4 py-2">
+                View All Job Posts
+            </a>
+            <a href="{{ url_for('admin.view_students') }}" class="glass-btn px-4 py-2">
+                View All Students
+            </a>
+            <a href="{{ url_for('admin.manage_categories') }}" class="glass-btn px-4 py-2">
+                Manage Categories
+            </a>
+            <a href="{{ url_for('admin.analytics') }}" class="glass-btn px-4 py-2">
+                View Analytics
+            </a>
+        </div>
+    </div>
+
+    <hr class="text-white-50 my-5">
+
+    
+</div>
+{% endblock %}

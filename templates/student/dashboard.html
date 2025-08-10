@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    .glass {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(8px);
+        border-radius: 10px;
+        padding: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glass .form-control,
+    .glass .form-select {
+        color: white !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    .glass .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+    .glass .form-check-label {
+        color: white !important;
+    }
+    .filter-title {
+        font-weight: bold;
+        color: #00bfff;
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        
+        <!-- Sidebar Filters -->
+        <div class="col-md-3">
+            <div class="glass">
+                <h5 class="mb-3 text-info">Find Your Next Job</h5>
+                <form method="GET" action="{{ url_for('student.student_dashboard') }}">
+                    
+                    <!-- Search -->
+                    <input type="text" name="q" class="form-control mb-3"
+                           placeholder="Search jobs..." value="{{ query or '' }}">
+
+                    <!-- Min Salary -->
+                    <input type="number" name="min_salary" class="form-control mb-3"
+                           placeholder="Minimum Salary" value="{{ min_salary or '' }}">
+
+                    <!-- Category -->
+                    <select name="category_id" class="form-select mb-3">
+                        <option value="">-- Select Category --</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}"
+                                {% if category_id and category_id|int == cat.id %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Job Type -->
+                    <div class="filter-title">Job Type</div>
+                    {% for t in ["Full-time", "Part-time", "Contract", "Freelance", "Internship"] %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="job_type"
+                                   value="{{ t }}" id="jobtype{{ loop.index }}"
+                                   {% if job_types and t in job_types %}checked{% endif %}>
+                            <label class="form-check-label" for="jobtype{{ loop.index }}">{{ t }}</label>
+                        </div>
+                    {% endfor %}
+
+                    <!-- Experience Level -->
+                    <div class="filter-title">Experience Level</div>
+                    {% for e in ["Entry Level", "Mid Level", "Senior Level", "Executive"] %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="experience_level"
+                                   value="{{ e }}" id="experience{{ loop.index }}"
+                                   {% if experience_levels and e in experience_levels %}checked{% endif %}>
+                            <label class="form-check-label" for="experience{{ loop.index }}">{{ e }}</label>
+                        </div>
+                    {% endfor %}
+
+                    <!-- Location -->
+                    <div class="filter-title">Location</div>
+                    {% for loc in ["Remote", "San Francisco", "New York", "Los Angeles", "Chicago", "Austin"] %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="location"
+                                   value="{{ loc }}" id="loc{{ loop.index }}"
+                                   {% if locations and loc in locations %}checked{% endif %}>
+                            <label class="form-check-label" for="loc{{ loop.index }}">{{ loc }}</label>
+                        </div>
+                    {% endfor %}
+
+                    <!-- Apply Button -->
+                    <a href="{{ url_for('student.student_dashboard') }}" class="btn btn-secondary w-100 mt-2">Clear Filters</a>
+                    <button type="submit" class="glass-btn w-100 mt-3">Apply Filter</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Job Listings -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-end mb-3">
+                <a href="{{ url_for('student.view_applications') }}" class="glass-btn">
+                    View My Applications
+                </a>
+            </div>
+
+            <div class="row">
+                {% if jobs %}
+                    {% for job in jobs %}
+                        <div class="col-md-6 mb-4">
+                            <div class="glass p-3 h-100">
+                                <h5 class="text-white">{{ job.title }}</h5>
+                                <h6 class="text-info">{{ job.company }}</h6>
+                                <p class="text-light"><strong>Location:</strong> {{ job.location }}</p>
+                                <p class="text-light"><strong>Salary:</strong> {{ job.min_salary or 'Not specified' }}</p>
+                                <p class="text-light"><strong>Experience:</strong> {{ job.experience_level }}</p>
+                                <p class="text-light"><strong>Category:</strong> {{ job.category.name if job.category else 'N/A' }}</p>
+                                <p class="text-truncate">{{ job.description }}</p>
+                                <a href="{{ url_for('student.job_details', job_id=job.id) }}" class="glass-btn btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-warning glass text-center">No jobs found matching your criteria.</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}
